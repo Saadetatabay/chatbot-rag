@@ -1,14 +1,9 @@
-# 🛒 TeknoMarket AI Asistanı (Hybrid RAG Chatbot)
+# 🛒 TeknoMarket AI Asistanı 
 
-**Ders:** Chatbot Geliştirme  
-**Öğrenci:** Sadet Yüksel Atabay  
-**Tarih:** Ocak 2026
-
----
 
 ## 📌 Proje Hakkında
 
-Bu proje, bir e-ticaret mağazası (**TeknoMarket**) için geliştirilmiş **Hibrit Mimariye (Hybrid Architecture)** sahip akıllı bir sanal asistandır.
+Bu proje, bir e-ticaret mağazası (**TeknoMarket**) için geliştirilmiş   akıllı bir sanal asistandır.
 
 Sistem; **geleneksel Makine Öğrenmesi (NLP)** yöntemleri ile **modern Üretken Yapay Zeka (Generative AI / RAG)** teknolojilerini birleştirerek hem **hızlı**, hem de **bağlama duyarlı ve doğru** yanıtlar üretmeyi amaçlar.
 
@@ -77,7 +72,7 @@ Projede göreve özel **3 farklı veri kaynağı** kullanılmıştır:
 ### 1. Gereksinimleri Yükleyin
 
 ```bash
-pip install streamlit pandas scikit-learn langchain-google-genai chromadb openpyxl
+pip install requirement.txt
 ```
 
 ### 2. API Anahtarını Ayarlayın
@@ -110,7 +105,7 @@ streamlit run main.py
 
 ### 🔹 RAG Modeli (Google Gemini)
 
-* **LLM:** `gemini-1.5-flash` (opsiyonel: Pro)  \
+* **LLM:** `gemini-2.5-flash-lite` (opsiyonel: Pro)  \
 * **Embedding:** `models/gemini-embedding-001`  \
 * **Tercih Nedeni:**
 
@@ -153,8 +148,3 @@ Sistemin dokümana bağlılığı ve cevap doğruluğu **RAGAS Framework** ile �
 ```
 
 ---
-
-## 👤 İletişim
-
-**Geliştirici:** Sadet Yüksel Atabay  
-**Ders:** Chatbot Geliştirme (2025–2026 Güz Dönemi)
