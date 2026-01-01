@@ -1,28 +1,160 @@
-🛒 TeknoMarket AI Asistanı (Hybrid RAG Chatbot)Ders: Chatbot GeliştirmeÖğrenci: Sadet Yüksel AtabayTarih: Ocak 2026📌 Proje HakkındaBu proje, bir e-ticaret mağazası (TeknoMarket) için geliştirilmiş Hibrit Mimariye (Hybrid Architecture) sahip akıllı bir sanal asistandır.Proje, geleneksel Makine Öğrenmesi (NLP) yöntemleri ile modern Üretken Yapay Zeka (Generative AI / RAG) teknolojilerini birleştirerek hem hızlı hem de akıllı yanıtlar üretmeyi hedefler.🚀 Öne Çıkan ÖzelliklerHibrit Karar Mekanizması: Basit niyetler (Intent) için ML, karmaşık sorular için LLM kullanılır.Gerçek Zamanlı Sipariş Sorgulama: Kullanıcı "102 nolu siparişim nerede?" dediğinde Excel veritabanından anlık durum çeker.RAG (Retrieval-Augmented Generation): Mağaza politikaları (İade, Kargo vb.) PDF dokümanından öğrenilerek cevaplanır.Optimize Edilmiş Performans: Streamlit cache mekanizması ile model sadece bir kez yüklenir.🧠 Sistem Mimarisi ve AkışSistem, kullanıcıdan gelen mesajı analiz etmek için 3 aşamalı bir Yönlendirici (Router) yapısı kullanır:Kod snippet'igraph TD
-    A[Kullanıcı Mesajı] --> B{Intent Analizi (Scikit-Learn)}
-    B -- "Selamlama / Veda" --> C[Hazır Cevap (Rule-Based)]
-    B -- "Sipariş Sorgulama" --> D{Regex ile ID Var mı?}
-    D -- Evet --> E[Excel'den Sipariş Durumu Getir (Pandas)]
-    D -- Hayır --> F[Kullanıcıdan No İste]
-    B -- "Bilgi Sorusu (Diğer)" --> G[RAG Sistemi (Gemini + PDF)]
-    G --> H[Vektör Arama & Cevap Üretimi]
-    C & E & F & H --> I[Kullanıcıya Yanıt]
-🗃️ Kullanılan Veri SetleriProjede göreve özgü 3 farklı veri kaynağı kullanılmıştır:Intent Veri Seti (dataset.xlsx):Boyut: ~1200 Satır.Amaç: Niyet Sınıflandırma (Selamlama, Sipariş Sorma, Veda vb.).Model: Scikit-Learn (Naive Bayes).Bilgi Tabanı (magaza_rehberi.pdf):İçerik: İade koşulları, kargo ücretleri, garanti prosedürleri.Amaç: RAG sistemi için kaynak doküman.Sipariş Veritabanı (siparisler.xlsx):İçerik: Müşteri sipariş numaraları, ürünler ve kargo durumları.Amaç: İşlemsel sorgulara yanıt vermek.🛠️ Kurulum ve ÇalıştırmaProjeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin.1. Gereksinimleri YükleyinBashpip install streamlit pandas scikit-learn langchain-google-genai chromadb openpyxl
-2. API Anahtarını AyarlayınProje kök dizininde .env dosyası oluşturun ve Google Gemini API anahtarınızı ekleyin:Kod snippet'iGOOGLE_API_KEY=senin_api_anahtarin_buraya
-3. Uygulamayı BaşlatınBashstreamlit run main.py
-📊 Model Seçimi ve Performans AnaliziProjede iki ana yapay zeka yaklaşımı karşılaştırılmış ve entegre edilmiştir.1. Intent Modeli (Scikit-Learn)Algoritma: Multinomial Naive Bayes (CountVectorizer ile).Neden Seçildi? Metin sınıflandırmada çok hızlıdır ve işlemciyi yormaz. Selamlama gibi basit işler için LLM maliyeti yaratmaz.2. RAG Modeli (Google Gemini)LLM: gemini-1.5-flash (veya Pro).Embedding: models/gemini-embedding-001.Neden Seçildi? Türkçe dil desteği çok güçlüdür ve token maliyeti/performans oranı yüksektir.📈 RAGAS Performans RaporuSistemin dokümana sadakati ve doğru bilgiyi bulma başarısı RAGAS Framework ile test edilmiştir.MetrikSkorAçıklamaContext Recall1.00Sistem, sorulan sorular için PDF'teki doğru paragrafı %100 başarıyla bulmuştur.Faithfulness0.98Model, PDF dışına çıkmadan ve halüsinasyon görmeden cevap üretmiştir.Answer Relevancy0.85Üretilen cevaplar kullanıcı sorusuyla doğrudan alakalıdır.📂 Proje Dosya Yapısı📂 chatbot-proje/
+# 🛒 TeknoMarket AI Asistanı (Hybrid RAG Chatbot)
+
+**Ders:** Chatbot Geliştirme  
+**Öğrenci:** Sadet Yüksel Atabay  
+**Tarih:** Ocak 2026
+
+---
+
+## 📌 Proje Hakkında
+
+Bu proje, bir e-ticaret mağazası (**TeknoMarket**) için geliştirilmiş **Hibrit Mimariye (Hybrid Architecture)** sahip akıllı bir sanal asistandır.
+
+Sistem; **geleneksel Makine Öğrenmesi (NLP)** yöntemleri ile **modern Üretken Yapay Zeka (Generative AI / RAG)** teknolojilerini birleştirerek hem **hızlı**, hem de **bağlama duyarlı ve doğru** yanıtlar üretmeyi amaçlar.
+
+---
+
+## 🚀 Öne Çıkan Özellikler
+
+* **Hibrit Karar Mekanizması**  
+  Basit niyetler (Intent) için klasik ML modelleri, karmaşık ve bilgi gerektiren sorular için LLM tabanlı RAG sistemi kullanılır.
+
+* **Gerçek Zamanlı Sipariş Sorgulama**  
+  Kullanıcı *"102 nolu siparişim nerede?"* gibi sorular sorduğunda Excel tabanlı veritabanından anlık bilgi çekilir.
+
+* **RAG (Retrieval-Augmented Generation)**  
+  İade, kargo ve garanti politikaları gibi bilgiler PDF dokümanlardan öğrenilerek cevaplanır.
+
+* **Optimize Edilmiş Performans**  
+  Streamlit cache mekanizması sayesinde modeller yalnızca bir kez yüklenir.
+
+---
+
+## 🧠 Sistem Mimarisi ve Akış
+
+Sistem, kullanıcıdan gelen mesajı analiz etmek için **3 aşamalı bir Router (Yönlendirici)** yapısı kullanır:
+
+```
+Kullanıcı Mesajı
+        ↓
+Intent Analizi (Scikit-Learn)
+        ↓
+ ┌───────────────┬───────────────────────┬─────────────────────────┐n | Selamlama/Veda| Sipariş Sorgulama     | Bilgi Sorusu (Diğer)     |
+ └───────────────┴───────────────────────┴─────────────────────────┘
+        ↓                     ↓                          ↓
+ Hazır Cevap        Regex ile Sipariş No        RAG Sistemi
+ (Rule-Based)       → Excel'den Durum           (Gemini + PDF)
+                           ↓                          ↓
+                    Kullanıcıya Yanıt
+```
+
+---
+
+## 🗃️ Kullanılan Veri Setleri
+
+Projede göreve özel **3 farklı veri kaynağı** kullanılmıştır:
+
+### 1️⃣ Intent Veri Seti (`dataset.xlsx`)
+
+* **Boyut:** ~1200 satır  \
+* **Amaç:** Niyet sınıflandırma (Selamlama, Sipariş Sorgulama, Veda vb.)  \
+* **Model:** Scikit-Learn – Multinomial Naive Bayes
+
+### 2️⃣ Bilgi Tabanı (`magaza_rehberi.pdf`)
+
+* **İçerik:** İade koşulları, kargo ücretleri, garanti prosedürleri  \
+* **Amaç:** RAG sistemi için bilgi kaynağı
+
+### 3️⃣ Sipariş Veritabanı (`siparisler.xlsx`)
+
+* **İçerik:** Sipariş numaraları, ürün bilgileri ve kargo durumları  \
+* **Amaç:** İşlemsel sorgulara anlık yanıt üretmek
+
+---
+
+## 🛠️ Kurulum ve Çalıştırma
+
+### 1. Gereksinimleri Yükleyin
+
+```bash
+pip install streamlit pandas scikit-learn langchain-google-genai chromadb openpyxl
+```
+
+### 2. API Anahtarını Ayarlayın
+
+Proje kök dizininde `.env` dosyası oluşturun:
+
+```env
+GOOGLE_API_KEY=senin_api_anahtarin_buraya
+```
+
+### 3. Uygulamayı Başlatın
+
+```bash
+streamlit run main.py
+```
+
+---
+
+## 📊 Model Seçimi ve Performans Analizi
+
+### 🔹 Intent Modeli (Scikit-Learn)
+
+* **Algoritma:** Multinomial Naive Bayes  \
+* **Vektörleme:** CountVectorizer  \
+* **Tercih Nedeni:**
+
+  * Çok hızlıdır
+  * Düşük donanım maliyeti
+  * Basit niyetler için LLM maliyeti oluşturmaz
+
+### 🔹 RAG Modeli (Google Gemini)
+
+* **LLM:** `gemini-1.5-flash` (opsiyonel: Pro)  \
+* **Embedding:** `models/gemini-embedding-001`  \
+* **Tercih Nedeni:**
+
+  * Güçlü Türkçe dil desteği
+  * Yüksek doğruluk
+  * Düşük token maliyeti
+
+---
+
+## 📈 RAGAS Performans Raporu
+
+Sistemin dokümana bağlılığı ve cevap doğruluğu **RAGAS Framework** ile ölçülmüştür:
+
+| Metrik           | Skor | Açıklama                                               |
+| ---------------- | ---- | ------------------------------------------------------ |
+| Context Recall   | 1.00 | PDF içindeki doğru paragraf %100 başarıyla bulunmuştur |
+| Faithfulness     | 0.98 | Model, PDF dışına çıkmadan cevap üretmiştir            |
+| Answer Relevancy | 0.85 | Cevaplar kullanıcı sorusuyla yüksek oranda alakalıdır  |
+
+---
+
+## 📂 Proje Dosya Yapısı
+
+```
+📂 chatbot-proje/
 │
-├── 📜 main.py                # Ana uygulama (Streamlit + Router Mantığı)
-├── 📜 eva.py                 # RAGAS Test ve Değerlendirme Kodu
-├── 📜 requirements.txt       # Kütüphaneler
-├── 📜 README.md              # Proje Dokümantasyonu
+├── main.py            # Streamlit ana uygulama & router mantığı
+├── eva.py             # RAGAS test ve değerlendirme kodu
+├── requirements.txt   # Gerekli kütüphaneler
+├── README.md          # Proje dokümantasyonu
 │
-├── 📂 data/
-│   ├── 📄 dataset.xlsx       # 1200 satırlık Intent verisi
-│   ├── 📄 magaza_rehberi.pdf # RAG için PDF
-│   └── 📄 siparisler.xlsx    # Sipariş veritabanı
+├── data/
+│   ├── dataset.xlsx        # Intent veri seti
+│   ├── magaza_rehberi.pdf  # RAG bilgi kaynağı
+│   └── siparisler.xlsx     # Sipariş veritabanı
 │
-└── 📂 models/
-    ├── 📜 rag_model.py       # RAG (LangChain) Kodları
-    └── 📜 simple_model.py    # Scikit-Learn Model Kodları
-👤 İletişimGeliştirici: Sadet Yüksel AtabayDers: Chatbot Geliştirme (2025-2026 Güz Dönemi)
+└── models/
+    ├── rag_model.py        # RAG (LangChain) kodları
+    └── simple_model.py    # Scikit-Learn intent modeli
+```
+
+---
+
+## 👤 İletişim
+
+**Geliştirici:** Sadet Yüksel Atabay  
+**Ders:** Chatbot Geliştirme (2025–2026 Güz Dönemi)
