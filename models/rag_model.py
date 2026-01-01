@@ -25,8 +25,8 @@ class RAGChatbotModel:
         # 2. Metni Parçalama
         # chunk_overlap=200 yaptık ki cümleler kopmasın, anlam bütünlüğü sürsün.
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000,
-            chunk_overlap=200
+            chunk_size=300,
+            chunk_overlap=50
         )
         texts = text_splitter.split_documents(data)
 
