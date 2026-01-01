@@ -5,7 +5,7 @@
 
 Bu proje, bir e-ticaret mağazası (**TeknoMarket**) için geliştirilmiş   akıllı bir sanal asistandır.
 
-Sistem; **geleneksel Makine Öğrenmesi (NLP)** yöntemleri ile **modern Üretken Yapay Zeka (Generative AI / RAG)** teknolojilerini birleştirerek hem **hızlı**, hem de **bağlama duyarlı ve doğru** yanıtlar üretmeyi amaçlar.
+Sistem; **Makine Öğrenmesi** yöntemleri ile **modern Üretken Yapay Zeka (Generative AI / RAG)** teknolojilerini birleştirerek hem **hızlı**, hem de **bağlama duyarlı ve doğru** yanıtlar üretmeyi amaçlar.
 
 ---
 
@@ -29,21 +29,27 @@ Sistem; **geleneksel Makine Öğrenmesi (NLP)** yöntemleri ile **modern Üretke
 
 Sistem, kullanıcıdan gelen mesajı analiz etmek için **3 aşamalı bir Router (Yönlendirici)** yapısı kullanır:
 
-```
-Kullanıcı Mesajı
-        ↓
-Intent Analizi (Scikit-Learn)
-        ↓
- ┌───────────────┬───────────────────────┬─────────────────────────┐n | Selamlama/Veda| Sipariş Sorgulama     | Bilgi Sorusu (Diğer)     |
- └───────────────┴───────────────────────┴─────────────────────────┘
-        ↓                     ↓                          ↓
- Hazır Cevap        Regex ile Sipariş No        RAG Sistemi
- (Rule-Based)       → Excel'den Durum           (Gemini + PDF)
-                           ↓                          ↓
-                    Kullanıcıya Yanıt
-```
+graph TD
+A[Kullanıcı Mesajı]
+A --> B{Intent Analizi (Scikit-Learn)}
 
----
+
+B -- Selamlama / Veda --> C[Hazır Cevap (Rule-Based)]
+
+
+B -- Sipariş Sorgulama --> D{Sipariş No Var mı? (Regex)}
+D -- Evet --> E[Excel'den Sipariş Durumu (Pandas)]
+D -- Hayır --> F[Kullanıcıdan Sipariş No İste]
+
+
+B -- Bilgi Sorusu --> G[RAG Sistemi (Gemini + PDF)]
+G --> H[Vektör Arama + Cevap Üretimi]
+
+
+C --> I[Kullanıcıya Yanıt]
+E --> I
+F --> I
+H --> I
 
 ## 🗃️ Kullanılan Veri Setleri
 
