@@ -30,26 +30,23 @@ Sistem; **Makine Öğrenmesi** yöntemleri ile **modern Üretken Yapay Zeka (Gen
 Sistem, kullanıcıdan gelen mesajı analiz etmek için **3 aşamalı bir Router (Yönlendirici)** yapısı kullanır:
 
 graph TD
-A[Kullanıcı Mesajı]
-A --> B{Intent Analizi (Scikit-Learn)}
+    A[Kullanıcı Mesajı]
+    A --> B{Intent Analizi (Scikit-Learn)}
 
+    B -- Selamlama / Veda --> C[Hazır Cevap (Rule-Based)]
 
-B -- Selamlama / Veda --> C[Hazır Cevap (Rule-Based)]
+    B -- Sipariş Sorgulama --> D{Sipariş No Var mı? (Regex)}
+    D -- Evet --> E[Excel'den Sipariş Durumu (Pandas)]
+    D -- Hayır --> F[Kullanıcıdan Sipariş No İste]
 
+    B -- Bilgi Sorusu --> G[RAG Sistemi (Gemini + PDF)]
+    G --> H[Vektör Arama + Cevap Üretimi]
 
-B -- Sipariş Sorgulama --> D{Sipariş No Var mı? (Regex)}
-D -- Evet --> E[Excel'den Sipariş Durumu (Pandas)]
-D -- Hayır --> F[Kullanıcıdan Sipariş No İste]
+    C --> I[Kullanıcıya Yanıt]
+    E --> I
+    F --> I
+    H --> I
 
-
-B -- Bilgi Sorusu --> G[RAG Sistemi (Gemini + PDF)]
-G --> H[Vektör Arama + Cevap Üretimi]
-
-
-C --> I[Kullanıcıya Yanıt]
-E --> I
-F --> I
-H --> I
 
 ## 🗃️ Kullanılan Veri Setleri
 
@@ -78,7 +75,7 @@ Projede göreve özel **3 farklı veri kaynağı** kullanılmıştır:
 ### 1. Gereksinimleri Yükleyin
 
 ```bash
-pip install requirement.txt
+pip install -r requirement.txt
 ```
 
 ### 2. API Anahtarını Ayarlayın
