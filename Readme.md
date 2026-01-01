@@ -27,8 +27,16 @@ Sistem; **Makine Öğrenmesi** yöntemleri ile **modern Üretken Yapay Zeka (Gen
 
 ## 🧠 Sistem Mimarisi ve Akış
 
-Sistem, kullanıcıdan gelen mesajı analiz etmek için **3 aşamalı bir Router (Yönlendirici)** yapısı kullanır:
+Sistem, kullanıcıdan gelen mesajı analiz etmek için **3 aşamalı bir Router (Yönlendirici)** yapısı kullanır.
 
+### 📌 Sistem Akış Diyagramı
+
+![Sistem Akış Diyagramı](data/diag.png)
+
+<details>
+<summary>🔧 Mermaid Kaynak Kodu</summary>
+
+```mermaid
 graph TD
     A[Kullanıcı Mesajı]
     A --> B{Intent Analizi (Scikit-Learn)}
