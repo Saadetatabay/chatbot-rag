@@ -33,9 +33,6 @@ Sistem, kullanıcıdan gelen mesajı analiz etmek için **3 aşamalı bir Router
 
 ![Sistem Akış Diyagramı](data/diag.png)
 
-<details>
-<summary>🔧 Mermaid Kaynak Kodu</summary>
-
 
 ## 🗃️ Kullanılan Veri Setleri
 
