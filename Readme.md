@@ -1,5 +1,6 @@
 # 🛒 TeknoMarket AI Asistanı 
 
+link : https://drive.google.com/drive/folders/1kQuZ2fbZA2X__Q1kTjSL5IJTt7525jJs?usp=drive_link
 
 ## 📌 Proje Hakkında
 
